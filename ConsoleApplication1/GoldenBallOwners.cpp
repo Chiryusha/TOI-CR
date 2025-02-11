@@ -28,9 +28,6 @@ void GoldenBallOwners::Show() const
 };
 
 void GoldenBallOwners::InputPlayers(GoldenBallOwners* ballers, int n) {
-    setlocale(LC_ALL, "ru");
-    //cout << "¬ведите количество обладетелей золотого м€ча:" << endl;
-    //cin >> n;
     for (int i = 0; i < n; i++)
     {
         string day;
