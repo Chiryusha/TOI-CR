@@ -93,7 +93,7 @@ bool LinkedList::DeleteById(int id) {
         current = current->next;
     }
     if (current == nullptr) {
-        return false; // Запись не найдена
+        return false;
     }
     if (prev == nullptr) {
         head = current->next;
