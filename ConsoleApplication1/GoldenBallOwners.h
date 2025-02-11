@@ -10,7 +10,7 @@ struct GoldenBallOwners
     string date_of_birth;
     unsigned int year_of_getting_prize;
     string country;
-    string club;
+    string club;//f
 
     GoldenBallOwners();
     void Show() const;
