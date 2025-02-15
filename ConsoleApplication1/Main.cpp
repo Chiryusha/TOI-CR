@@ -82,7 +82,7 @@ int main()
                     int updateId;
                     cout << "Введите ID для редактирования: ";
                     cin >> updateId;
-                    UpdateRecord(array, IndexId, IndexYear, n, updateId);
+                    UpdateRecord(array, IndexId, IndexYear, n, updateId); 
                     break;
                 case 5:
                     int deleteId;
