@@ -101,43 +101,51 @@ int main()
             break;
 
         case 2:
-            cout << "Сортировка с использованием бинарных деревьев" << endl;
+            int point;
+            cout << "Сортировка и поиск данных в массивах с использованием бинарного дерева" << endl;
             int p;
             cout << "Введите количество обладателей золотого мяча:" << endl;
             cin >> p;
-            cout << "ХУЙ" << endl;
             array[0].InputPlayers(array, p);
 
             // Создание индексов в виде бинарного дерева
             rootById = CreateIndexTree(array, p, false);
             rootByYear = CreateIndexTree(array, p, true);
-
-            // Вывод данных по возрастанию значений ключевого атрибута
-            cout << "Сортировка по ID:" << endl;
-            PrintByIndexTree(rootById, array);
-            cout << "Сортировка по году получения приза:" << endl;
-            PrintByIndexTree(rootByYear, array);
-
-            // Поиск элемента по значению ключевого атрибута
-            int searchKey1;
-            cout << "Введите ID для поиска: ";
-            cin >> searchKey1;
-            SearchByKey(array, rootById, searchKey1);
-
-            // Редактирование записи
-            int updateId1;
-            cout << "Введите ID для редактирования: ";
-            cin >> updateId1;
-            UpdateIndexByTree(array, rootById, rootByYear, p, updateId1);
-
-            // Удаление записи
-            int deleteId1;
-            cout << "Введите ID для удаления: ";
-            cin >> deleteId1;
-            DeleteRecordByIndexTree(array, rootById, p, deleteId1);
-
-            // Освобождение памяти, выделенной для бинарных деревьев
-            // Здесь можно добавить функцию для
+            do {
+                menu.Show_Third_Menu();
+                cin >> point;
+                switch (point) {
+                case 1:
+                    // Вывод данных по возрастанию значений ключевого атрибута
+                    cout << "Сортировка по ID:" << endl;
+                    PrintByIndexTree(rootById, array);
+                    cout << "Сортировка по году получения приза:" << endl;
+                    PrintByIndexTree(rootByYear, array);
+                    break;
+                case 2:
+                    // Поиск элемента по значению ключевого атрибута
+                    int searchKey1;
+                    cout << "Введите ID для поиска: ";
+                    cin >> searchKey1;
+                    SearchByKey(array, rootById, searchKey1);
+                    break;
+                case 3:
+                    // Редактирование записи
+                    int updateId1;
+                    cout << "Введите ID для редактирования: ";
+                    cin >> updateId1;
+                    UpdateIndexByTree(array, rootById, rootByYear, p, updateId1);
+                    break;
+                case 4:
+                    // Удаление записи
+                    int deleteId1;
+                    cout << "Введите ID для удаления: ";
+                    cin >> deleteId1;
+                    DeleteRecordByIndexTree(array, rootById, p, deleteId1);
+                    break;
+                }
+                
+            } while (point != 5);
             break;
         case 3:
             LinkedList list;
