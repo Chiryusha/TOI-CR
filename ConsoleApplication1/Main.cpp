@@ -68,7 +68,7 @@ int main()
                     int result1;
                     cout << "Введите ID для поиска: ";
                     cin >> searchKey1;
-                    result1 = BinarySearchIterative(array, IndexId, n, searchKey1, false);
+                    result1 = BinarySearchIterative(array, IndexId, n, searchKey1, false);//
                     if (result1 != -1) {
                         cout << "Найдено:" << endl;
                         array[result1].Show();
