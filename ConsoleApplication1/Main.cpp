@@ -34,7 +34,7 @@ int main()
         case 1:
             int n;
             int ans;
-            /*std::cout << "Введите количество обладетелей золотого мяча:" << endl;
+            std::cout << "Введите количество обладетелей золотого мяча:" << endl;
             cin >> n;
             if (n > 10) {
                 cout << "Превышено максимальное количество обладателей." << endl;
@@ -42,7 +42,7 @@ int main()
             }
             /*int IndexId[size];
             int IndexYear[size];*/
-            //array[0].InputPlayers(array, n);*/
+            array[0].InputPlayers(array, n);
             inputGoldenBallOwnersFromFile(array, n);
             CreateIndex(array, n, IndexId, IndexYear);
             cout << " " << endl;

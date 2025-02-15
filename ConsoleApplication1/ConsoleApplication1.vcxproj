@@ -139,9 +139,6 @@
     <ClInclude Include="Menu.h" />
     <ClInclude Include="TreeNode.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\..\..\Desktop\golden_ball_owners.txt" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

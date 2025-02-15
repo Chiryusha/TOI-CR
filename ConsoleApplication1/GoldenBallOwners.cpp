@@ -3,6 +3,7 @@
 #include <cstring>
 #include <string>
 #include <fstream>
+#include <filesystem>
 using namespace std;
 
 GoldenBallOwners::GoldenBallOwners() {
@@ -198,22 +199,21 @@ void DeleteRecord(GoldenBallOwners* array, int* indexId, int* indexYear, int& n,
 }
 
 
-    void inputGoldenBallOwnersFromFile(GoldenBallOwners * array, int& n) {
-        const char* filename = "golden_ball_owners.txt"; // Устанавливаем имя файла по умолчанию
-        std::ifstream file(filename);
+    void inputGoldenBallOwnersFromFile(GoldenBallOwners array[], int& n) {
+        string ballers = "golden_ball_owners.txt"; // Устанавливаем имя файла по умолчанию
+        ifstream file(ballers);
         if (!file.is_open()) {
-            std::cout << "Ошибка: Не удалось открыть файл " << filename << std::endl;
+            std::cout << "Ошибка: Не удалось открыть файл " << ballers << std::endl;
             return;
         }
 
-        // Считываем количество записей в файле
+        /*// Считываем количество записей в файле
         file >> n;
         std::cout << "Число записей: " << n << std::endl; // Отладочный выво
         if (n <= 0) {
             std::cout << "Ошибка: Некорректное количество записей." << std::endl;
             file.close();
-            return;
-        }
+            return;*/
 
         for (int i = 0; i < n; ++i) {
             if (!(file >> array[i].id >> array[i].firstname >> array[i].lastname >> array[i].date_of_birth
