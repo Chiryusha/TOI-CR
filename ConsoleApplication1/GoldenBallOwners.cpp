@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstring>
 #include <string>
+#include <fstream>
 using namespace std;
 
 GoldenBallOwners::GoldenBallOwners() {
@@ -73,15 +74,32 @@ void CreateIndex(const GoldenBallOwners* array, int n, int* indexId, int* indexY
             }
         }
     }
+    // Сортировка индексов по году получения приза методом вставок
+    for (int i = 1; i < n; ++i) {
+        int keyIndex = indexYear[i];
+        int j = i - 1;
 
-    // Сортировка индексов по году получения приза
+        // Перемещаем элементы, которые больше, чем текущий элемент, на одну позицию вперед
+        while (j >= 0 && array[indexYear[j]].year_of_getting_prize < array[keyIndex].year_of_getting_prize) {
+            indexYear[j + 1] = indexYear[j];
+            j = j - 1;
+        }
+        indexYear[j + 1] = keyIndex;
+    }
+    
+    
+    
+    
+    
+    
+    /*Сортировка индексов по году получения приза
     for (int i = 0; i < n - 1; ++i) {
         for (int j = 0; j < n - i - 1; ++j) {
             if (array[indexYear[j]].year_of_getting_prize < array[indexYear[j + 1]].year_of_getting_prize) {
                 swap(indexYear[j], indexYear[j + 1]);
             }
         }
-    }
+    }*/
 }
 
 void PrintByIndex(const GoldenBallOwners* array, const int* index, int n) {
@@ -175,8 +193,36 @@ void DeleteRecord(GoldenBallOwners* array, int* indexId, int* indexYear, int& n,
     }
     else {
         cout << "Запись не найдена." << endl;
-        
+
     }
 }
+
+
+    void inputGoldenBallOwnersFromFile(GoldenBallOwners * array, int& n) {
+        const char* filename = "golden_ball_owners.txt"; // Устанавливаем имя файла по умолчанию
+        std::ifstream file(filename);
+        if (!file.is_open()) {
+            std::cout << "Ошибка: Не удалось открыть файл " << filename << std::endl;
+            return;
+        }
+
+        // Считываем количество записей в файле
+        file >> n;
+        std::cout << "Число записей: " << n << std::endl; // Отладочный выво
+        if (n <= 0) {
+            std::cout << "Ошибка: Некорректное количество записей." << std::endl;
+            file.close();
+            return;
+        }
+
+        for (int i = 0; i < n; ++i) {
+            if (!(file >> array[i].id >> array[i].firstname >> array[i].lastname >> array[i].date_of_birth
+                >> array[i].year_of_getting_prize >> array[i].country >> array[i].club)) {
+                std::cout << "Ошибка: Не удалось загрузить данные для записи " << i + 1 << std::endl;
+                break; // Прерываем цикл, если не удалось прочитать данные
+            }
+        }
+        file.close();
+    }
 
 

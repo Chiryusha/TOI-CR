@@ -23,6 +23,9 @@ int main()
     TreeNode* rootById = nullptr; // Объявление здесь
     TreeNode* rootByYear = nullptr; // Объявление здесь
 
+    
+
+
     bool Checking = true; // Переменная для проверки ввода
     do {
         menu.Show();
@@ -31,7 +34,7 @@ int main()
         case 1:
             int n;
             int ans;
-            std::cout << "Введите количество обладетелей золотого мяча:" << endl;
+            /*std::cout << "Введите количество обладетелей золотого мяча:" << endl;
             cin >> n;
             if (n > 10) {
                 cout << "Превышено максимальное количество обладателей." << endl;
@@ -39,7 +42,8 @@ int main()
             }
             /*int IndexId[size];
             int IndexYear[size];*/
-            array[0].InputPlayers(array, n);
+            //array[0].InputPlayers(array, n);*/
+            inputGoldenBallOwnersFromFile(array, n);
             CreateIndex(array, n, IndexId, IndexYear);
             cout << " " << endl;
             do {
@@ -62,7 +66,15 @@ int main()
                     int result;
                     cout << "Введите год получения награды для поиска:";
                     cin >> searchkey;
-                    //result = BinarySearchRecursive(array, IndexYear, left, right, searchkey, true);
+                    result = BinarySearchRecursive(array, IndexYear, 0, n-1, searchkey, true);
+                    if (result != -1) {
+                        cout << "Найдено:" << endl;
+                        array[result].Show();
+                    }
+                    else {
+                        cout << "Не найдено." << endl;
+                    }
+                    break;
                 case 3:
                     int searchKey1;
                     int result1;
