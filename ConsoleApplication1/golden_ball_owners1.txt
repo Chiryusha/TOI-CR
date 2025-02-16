@@ -1,11 +1,11 @@
 10
-10 Lionel Messi 24.06.1987 2021 Argentina PSG Paris
-7 Cristiano Ronaldo 05.02.1985 2017 Portugal Real Madrid
-14 Luka Modric 09.09.1985 2018 Croatia Real Madrid
-13 Karl-Heinz Rummenigge 25.09.1954 1980 Germany Bayern Munich
-9 Paolo Rossi 23.09.1956 1982 Italy Juventus Turin
-11 Johan Cruyff 25.04.1947 1971 Netherlands Ajax Amsterdam
-12 Franz Beckenbauer 11.09.1945 1972 Germany Bayern Munich
-8 Diego Maradona 30.10.1960 1986 Argentina Napoli Naples
-16 Zinedine Zidane 23.06.1972 1998 France Real Madrid
-11 Mikhail Gorbachev 29.09.1951 1984 Russia Dynamo Moscow
+10 Lionel Messi 24.06.1987 2021 Argentina PSG
+7 Cristiano Ronaldo 05.02.1985 2017 Portugal RealM
+14 Luka Modric 09.09.1985 2018 Croatia RealM
+13 Karl-Heinz Rummenigge 25.09.1954 1980 Germany Bayern
+9 Paolo Rossi 23.09.1956 1982 Italy Juventus
+11 Johan Cruyff 25.04.1947 1971 Netherlands Ajax
+12 Franz Beckenbauer 11.09.1945 1972 Germany Bayern
+8 Diego Maradona 30.10.1960 1986 Argentina Napoli
+16 Zinedine Zidane 23.06.1972 1998 France RealM
+11 Lev Yashin 22.11.1929 1963 Russia Dynamo

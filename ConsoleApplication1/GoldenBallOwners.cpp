@@ -1,10 +1,8 @@
 #include "GoldenBallOwners.h"
 #include <iostream>
-#include <cstring>
 #include <string>
 #include <fstream>
 #include <filesystem>
-#include <algorithm>
 using namespace std;
 
 GoldenBallOwners::GoldenBallOwners() {
@@ -15,8 +13,6 @@ GoldenBallOwners::GoldenBallOwners() {
     year_of_getting_prize;
     country;
     club;
-    Additional_club_name;
-
 };
 
 
@@ -201,7 +197,7 @@ void DeleteRecord(GoldenBallOwners* array, int* indexId, int* indexYear, int& n,
 
 
 void inputGoldenBallOwnersFromFile(GoldenBallOwners* array) {
-    //string ballers = "golden_ball_owners.txt"; // Устанавливаем имя файла по умолчанию
+    
     ifstream file("golden_ball_owners1.txt");
     if (!file.is_open()) {
         cout << "Ошибка: Не удалось открыть файл " << endl;
@@ -220,7 +216,7 @@ void inputGoldenBallOwnersFromFile(GoldenBallOwners* array) {
 
         for (int i = 0; i < n; ++i) {
             if (!(file >> array[i].id >> array[i].firstname >> array[i].lastname >> array[i].date_of_birth
-                >> array[i].year_of_getting_prize >> array[i].country >> array[i].club >> array[i].Additional_club_name)) {
+                >> array[i].year_of_getting_prize >> array[i].country >> array[i].club )) {
                 cout << "Ошибка: Не удалось загрузить данные для записи " << i + 1 << endl;
                 break; // Прерываем цикл, если не удалось прочитать данные
             }
