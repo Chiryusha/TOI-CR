@@ -70,7 +70,7 @@ void CreateIndex(const GoldenBallOwners* array, int n, int* indexId, int* indexY
         indexYear[i] = i;
     }
 
-    // Сортировка индексов по id
+    // Сортировка индексов по id пузырьком
     for (int i = 0; i < n - 1; ++i) {
         for (int j = 0; j < n - i - 1; ++j) {
             if (array[indexId[j]].id > array[indexId[j + 1]].id) {
@@ -109,7 +109,7 @@ int BinarySearchRecursive(const GoldenBallOwners* array, const int* index, int l
             return index[mid];
         }
 
-        if (array[index[mid]].year_of_getting_prize > year) {
+        if (array[index[mid]].year_of_getting_prize < year) {
             return BinarySearchRecursive(array, index, left, mid - 1, year);
         }
         else {
@@ -121,21 +121,7 @@ int BinarySearchRecursive(const GoldenBallOwners* array, const int* index, int l
     
     
     
-    
-    
-    
-    
-    /*if (right >= left) {
-        int mid = left + (right - left) / 2;
-        if (byYear ? array[index[mid]].year_of_getting_prize == key : array[index[mid]].id == key) {
-            return index[mid];
-        }
-        if (byYear ? array[index[mid]].year_of_getting_prize > key : array[index[mid]].id > key) {
-            return BinarySearchRecursive(array, index, left, mid - 1, key, byYear);
-        }
-        return BinarySearchRecursive(array, index, mid + 1, right, key, byYear);
-    }
-    return -1;*/
+ 
 }
 
 int BinarySearchIterative(const GoldenBallOwners* array, const int* index, int n, int key, bool byYear) { //false Это поиск по id
@@ -211,6 +197,7 @@ void DeleteRecord(GoldenBallOwners* array, int* indexId, int* indexYear, int& n,
 
     }
 }
+
 
 
 void inputGoldenBallOwnersFromFile(GoldenBallOwners* array) {

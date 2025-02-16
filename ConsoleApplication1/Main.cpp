@@ -5,7 +5,7 @@
 #include "GoldenBallOwners.h"
 #include "LinkedList.h"
 #include "TreeNode.h"
-#include < algorithm >
+#include <algorithm>
 
 
 using namespace std;
@@ -19,7 +19,9 @@ int main()
     int choice;
     Menu menu;
     const int size = 10;
+    int n = size; // вспомогательная
     GoldenBallOwners array[size];
+   
     int IndexId[size];
     int IndexYear[size];
     TreeNode* rootById = nullptr; // Объявление здесь
@@ -35,7 +37,7 @@ int main()
             do {
                 menu.Show();
                 cin >> choice;
-                CreateIndex(array, size, IndexId, IndexYear);
+                CreateIndex(array, n, IndexId, IndexYear);
                 switch (choice) {
                 case 1:
                     int ans;
@@ -56,9 +58,9 @@ int main()
                         case 2:
                             int searchkey;
                             int result;
-                            cout << "Введите год получения награды для поиска:";
+                            cout << "Введите год получения награды для поиска: ";
                             cin >> searchkey;
-                            result = BinarySearchRecursive(array, IndexYear, 0, size - 1, searchkey);
+                            result = BinarySearchRecursive(array, IndexYear, 0, size-1, searchkey);
                             if (result != -1) {
                                 cout << "Найдено:" << endl;
                                 array[result].Show();
@@ -88,14 +90,14 @@ int main()
                             cin >> updateId;
                             UpdateRecord(array, IndexId, IndexYear, size, updateId);
                             break;
-                            /*case 5:
+                            case 5:
                                 int deleteId;
                                 cout << "Введите ID для удаления: ";
                                 cin >> deleteId;
-                                DeleteRecord(array, IndexId, IndexYear, size, deleteId);
-                                break;*/
+                                DeleteRecord(array, IndexId, IndexYear, n, deleteId);
+                                break;
                         case 6:
-                            for (int i = 0; i < size; i++) {
+                            for (int i = 0; i < n; i++) {
                                 array[i].Show();
                                 cout << "----------------------" << endl;
 

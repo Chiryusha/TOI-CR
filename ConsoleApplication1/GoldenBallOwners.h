@@ -27,7 +27,7 @@ int BinarySearchRecursive(const GoldenBallOwners* array, const int* index, int l
 int BinarySearchIterative(const GoldenBallOwners* array, const int* index, int n, int key, bool byYear);
 void UpdateRecord(GoldenBallOwners* array, int* indexId, int* indexYear, int n, int id);
 void DeleteRecord(GoldenBallOwners* array, int* indexId, int* indexYear, int& n, int id);
-void DeleteRecordfromfile(GoldenBallOwners* array, int* indexId, int* indexYear, const int n, int id);
+//void DeleteRecordfromfile(GoldenBallOwners* array, int* indexId, int* indexYear, const int n, int id);
 void inputGoldenBallOwnersFromFile(GoldenBallOwners* array);
 
 
