@@ -8,7 +8,7 @@ void Menu::Show() {
     cout << "1) Задание 1" << endl;
     cout << "2) Задание 2" << endl;
     cout << "3) Задание 3" << endl;
-    cout << "4) Выход" << endl;
+    cout << "4) Назад" << endl;
 }
 
 void Menu::Show_Second_Menu() {
@@ -43,4 +43,11 @@ void Menu::Show_Fourth_Menu()
         << "сортировка" << endl;
     cout << "5) Удаление записи" << endl;
     cout << "6) Назад" << endl;
+}
+void Menu::Show_Choice()
+{
+    cout << "Выберите способ получения данных об обладателях золотого мяча: " << endl;;
+    cout << "1) Экспорт данных из файла" << endl;;
+    cout << "2) Ввод данных вручную" << endl;;
+    cout << "3) Выход" << endl;;
 }

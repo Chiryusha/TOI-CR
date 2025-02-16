@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include <filesystem>
+#include <algorithm>
 using namespace std;
 
 GoldenBallOwners::GoldenBallOwners() {
@@ -14,6 +15,8 @@ GoldenBallOwners::GoldenBallOwners() {
     year_of_getting_prize;
     country;
     club;
+    Additional_club_name;
+
 };
 
 
@@ -88,30 +91,41 @@ void CreateIndex(const GoldenBallOwners* array, int n, int* indexId, int* indexY
         indexYear[j + 1] = keyIndex;
     }
     
-    
-    
-    
-    
-    
-    /*Сортировка индексов по году получения приза
-    for (int i = 0; i < n - 1; ++i) {
-        for (int j = 0; j < n - i - 1; ++j) {
-            if (array[indexYear[j]].year_of_getting_prize < array[indexYear[j + 1]].year_of_getting_prize) {
-                swap(indexYear[j], indexYear[j + 1]);
-            }
-        }
-    }*/
 }
 
 void PrintByIndex(const GoldenBallOwners* array, const int* index, int n) {
     for (int i = 0; i < n; ++i) {
         array[index[i]].Show();
+        cout << "------------------------" << endl;
         cout << endl;
     }
 }
 
-int BinarySearchRecursive(const GoldenBallOwners* array, const int* index, int left, int right, int key, bool byYear) {
+int BinarySearchRecursive(const GoldenBallOwners* array, const int* index, int left, int right, int year) {
     if (right >= left) {
+        int mid = left + (right - left) / 2;
+
+        if (array[index[mid]].year_of_getting_prize == year) {
+            return index[mid];
+        }
+
+        if (array[index[mid]].year_of_getting_prize > year) {
+            return BinarySearchRecursive(array, index, left, mid - 1, year);
+        }
+        else {
+            return BinarySearchRecursive(array, index, mid + 1, right, year);
+        }
+    }
+    return -1;
+    
+    
+    
+    
+    
+    
+    
+    
+    /*if (right >= left) {
         int mid = left + (right - left) / 2;
         if (byYear ? array[index[mid]].year_of_getting_prize == key : array[index[mid]].id == key) {
             return index[mid];
@@ -121,7 +135,7 @@ int BinarySearchRecursive(const GoldenBallOwners* array, const int* index, int l
         }
         return BinarySearchRecursive(array, index, mid + 1, right, key, byYear);
     }
-    return -1;
+    return -1;*/
 }
 
 int BinarySearchIterative(const GoldenBallOwners* array, const int* index, int n, int key, bool byYear) { //false Это поиск по id
@@ -199,26 +213,28 @@ void DeleteRecord(GoldenBallOwners* array, int* indexId, int* indexYear, int& n,
 }
 
 
-    void inputGoldenBallOwnersFromFile(GoldenBallOwners array[], int& n) {
-        string ballers = "golden_ball_owners.txt"; // Устанавливаем имя файла по умолчанию
-        ifstream file(ballers);
-        if (!file.is_open()) {
-            std::cout << "Ошибка: Не удалось открыть файл " << ballers << std::endl;
-            return;
-        }
+void inputGoldenBallOwnersFromFile(GoldenBallOwners* array) {
+    //string ballers = "golden_ball_owners.txt"; // Устанавливаем имя файла по умолчанию
+    ifstream file("golden_ball_owners1.txt");
+    if (!file.is_open()) {
+        cout << "Ошибка: Не удалось открыть файл " << endl;
+        return;
+    }
 
-        /*// Считываем количество записей в файле
+        //Считываем количество записей в файле
+        int n;
         file >> n;
-        std::cout << "Число записей: " << n << std::endl; // Отладочный выво
+        std::cout << "Файл считан. Число записей: " << n << std::endl; // Отладочный вывод
         if (n <= 0) {
             std::cout << "Ошибка: Некорректное количество записей." << std::endl;
             file.close();
-            return;*/
+            return;
+        }
 
         for (int i = 0; i < n; ++i) {
             if (!(file >> array[i].id >> array[i].firstname >> array[i].lastname >> array[i].date_of_birth
-                >> array[i].year_of_getting_prize >> array[i].country >> array[i].club)) {
-                std::cout << "Ошибка: Не удалось загрузить данные для записи " << i + 1 << std::endl;
+                >> array[i].year_of_getting_prize >> array[i].country >> array[i].club >> array[i].Additional_club_name)) {
+                cout << "Ошибка: Не удалось загрузить данные для записи " << i + 1 << endl;
                 break; // Прерываем цикл, если не удалось прочитать данные
             }
         }

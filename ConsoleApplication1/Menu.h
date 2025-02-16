@@ -7,5 +7,6 @@ class Menu
 	void Show_Second_Menu();
 	void Show_Third_Menu();
 	void Show_Fourth_Menu();
+	void Show_Choice();
 };
 
