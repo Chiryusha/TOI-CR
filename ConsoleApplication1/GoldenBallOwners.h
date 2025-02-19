@@ -14,9 +14,8 @@ struct GoldenBallOwners
 
     GoldenBallOwners();
     void Show() const;
-    void InputPlayers(GoldenBallOwners* ballers, int n);
 };
-
+void InputPlayers(GoldenBallOwners* ballers, int n);
 void CreateIndex(const GoldenBallOwners* array, int n, int* indexid, int* IndexYear);
 void PrintByIndex(const GoldenBallOwners* array, const int* index, int n);
 int BinarySearchRecursive(const GoldenBallOwners* array, const int* index, int left, int right, int key);

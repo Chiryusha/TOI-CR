@@ -8,4 +8,4 @@
 12 Franz Beckenbauer 11.09.1945 1972 Germany Bayern
 8 Diego Maradona 30.10.1960 1986 Argentina Napoli
 16 Zinedine Zidane 23.06.1972 1998 France RealM
-11 Lev Yashin 22.11.1929 1963 Russia Dynamo
+1 Lev Yashin 22.11.1929 1963 Russia Dynamo

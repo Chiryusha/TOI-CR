@@ -26,6 +26,7 @@ int main()
     int IndexYear[size];
     TreeNode* rootById = nullptr; // Объявление здесь
     TreeNode* rootByYear = nullptr; // Объявление здесь
+    TreeNode* result = nullptr;
 
     int choice1;
     do {
@@ -107,6 +108,72 @@ int main()
                     } while (ans != 7);
 
                     break;
+
+                case 2:
+                    int point;
+                    cout << "Сортировка и поиск данных в массивах с использованием бинарного дерева" << endl;
+                    // Создание индексов в виде бинарного дерева
+                    rootById = CreateIndexTree(array, n, false);
+                    rootByYear = CreateIndexTree(array, n, true);
+                    do {
+                        menu.Show_Third_Menu();
+                        cin >> point;
+                        switch (point) {
+                        case 1:
+                            // Вывод данных по возрастанию значений ключевого атрибута
+                            cout << "Сортировка по ID:" << endl;
+                            cout << "-------------------" << endl;
+                            PrintByIdTree(rootById, array);
+                            cout << " " << endl;
+                            cout << " " << endl;
+
+
+                            cout << "Сортировка по году получения приза:" << endl;
+                            cout << "-------------------" << endl;
+                            PrintByYearTree(rootByYear, array);
+                            break;
+                        case 2:
+                            // Поиск элемента по значению ключевого атрибута
+                            int searchKey1;
+                            cout << "Введите ID для поиска: ";
+                            cin >> searchKey1;
+                            result = SearchNodeRecursive(rootById, searchKey1); 
+                            if (result != nullptr) {
+                                array[result->index].Show();
+                            }
+                            else {
+                                cout << "Запись не найдена." << endl;
+                            }
+                            break;
+                        case 3:
+                            // Ре
+                            int SearchKey2;
+                            cout << "Введите год получения награды: ";
+                            cin >> SearchKey2;
+                            result = SearchNodeIterative(rootByYear, SearchKey2);
+                            if (result != nullptr) {
+                                array[result->index].Show();
+                            }
+                            else {
+                                cout << "Запись не найдена." << endl;
+                            }
+                            break;
+                        case 4:
+                            // Удаление записи
+                            int deleteId1;
+                            cout << "Введите ID для удаления: ";
+                            cin >> deleteId1;
+                            DeleteRecordByIndexTree(array, rootById, n, deleteId1);
+                            break;
+                        case 5:
+                            for (int i = 0; i < n; i++) {
+                                array[i].Show();
+                                cout << "-----------------" << endl;;
+                            }
+                            break;
+                        }
+                    } while (point != 6);
+                    break;
                 }
             } while (choice != 4);
 
@@ -125,9 +192,7 @@ int main()
                         cout << "Превышено максимальное количество обладателей." << endl;
                         return 0;
                     }
-                    /*int IndexId[size];
-                    int IndexYear[size];*/
-                    array[0].InputPlayers(array, n);
+                    InputPlayers(array, n);
                     CreateIndex(array, n, IndexId, IndexYear);
                     do {
                         menu.Show_Second_Menu();
@@ -172,7 +237,6 @@ int main()
                             }
                             break;
                         case 4:
-                            // Редактирование записи
                             int updateId;
                             cout << "Введите ID для редактирования: ";
                             cin >> updateId;
@@ -193,14 +257,14 @@ int main()
                             break;
                         }
                     } while (ans != 7);
-                    break;
+
                 case 2:
                     int point;
                     cout << "Сортировка и поиск данных в массивах с использованием бинарного дерева" << endl;
                     int p;
                     cout << "Введите количество обладателей золотого мяча:" << endl;
                     cin >> p;
-                    array[0].InputPlayers(array, p);
+                    InputPlayers(array, p);
 
                     // Создание индексов в виде бинарного дерева
                     rootById = CreateIndexTree(array, p, false);
@@ -212,23 +276,28 @@ int main()
                         case 1:
                             // Вывод данных по возрастанию значений ключевого атрибута
                             cout << "Сортировка по ID:" << endl;
-                            PrintByIndexTree(rootById, array);
+                            cout << "-------------------" <<endl;
+                            PrintByIdTree(rootById, array);
+                            cout << " ";
                             cout << "Сортировка по году получения приза:" << endl;
-                            PrintByIndexTree(rootByYear, array);
+                            cout << "-----------------" << endl;
+                            PrintByYearTree(rootByYear, array);
                             break;
                         case 2:
                             // Поиск элемента по значению ключевого атрибута
                             int searchKey1;
                             cout << "Введите ID для поиска: ";
                             cin >> searchKey1;
-                            SearchByKey(array, rootById, searchKey1);
+                            result = SearchNodeRecursive(rootById, searchKey1);
+                            if (result != nullptr) {
+                                array[result->index].Show();
+                            }
+                            else {
+                                cout << "Запись не найдена." << endl;
+                            }
                             break;
                         case 3:
-                            // Редактирование записи
-                            int updateId1;
-                            cout << "Введите ID для редактирования: ";
-                            cin >> updateId1;
-                            UpdateIndexByTree(array, rootById, rootByYear, p, updateId1);
+
                             break;
                         case 4:
                             // Удаление записи
@@ -237,9 +306,15 @@ int main()
                             cin >> deleteId1;
                             DeleteRecordByIndexTree(array, rootById, p, deleteId1);
                             break;
+                        case 5:
+                            for (int i = 0; i < p; i++) {
+                                array[i].Show();
+                                cout << "-----------------" << endl;;
+                            }
+                            break;
                         }
 
-                    } while (point != 5);
+                    } while (point != 6);
                     break;
                 case 3:
                     LinkedList list;
@@ -249,7 +324,7 @@ int main()
 
                     for (int i = 0; i < k; ++i) {
                         GoldenBallOwners player;
-                        player.InputPlayers(&player, 1);
+                        InputPlayers(&player, 1);
                         list.Insert(player);
                     }
 
@@ -260,6 +335,7 @@ int main()
                     // Вывод записей из списка в порядке возрастания ID
                     cout << "Записи из списка в порядке возрастания ID:" << endl;
                     list.PrintSortedById();
+                    break;
                     break;
                 }
             } while (choice != 4);

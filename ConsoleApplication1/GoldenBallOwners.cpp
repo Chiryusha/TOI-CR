@@ -28,7 +28,7 @@ void GoldenBallOwners::Show() const
     cout << "Клуб: " << club << endl;
 };
 
-void GoldenBallOwners::InputPlayers(GoldenBallOwners* ballers, int n) {
+void InputPlayers(GoldenBallOwners* ballers, int n) {
     for (int i = 0; i < n; i++)
     {
         string day;
@@ -66,7 +66,7 @@ void CreateIndex(const GoldenBallOwners* array, int n, int* indexId, int* indexY
         indexYear[i] = i;
     }
 
-    // Сортировка индексов по id пузырьком
+    // Сортировка индексов по номеру пузырьком
     for (int i = 0; i < n - 1; ++i) {
         for (int j = 0; j < n - i - 1; ++j) {
             if (array[indexId[j]].id > array[indexId[j + 1]].id) {
