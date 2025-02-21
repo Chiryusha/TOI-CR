@@ -27,6 +27,7 @@ int main()
     TreeNode* rootById = nullptr; // Объявление здесь
     TreeNode* rootByYear = nullptr; // Объявление здесь
     TreeNode* result = nullptr;
+    ListNode* head = nullptr;
 
     int choice1;
     do {
@@ -174,6 +175,32 @@ int main()
                         }
                     } while (point != 6);
                     break;
+                case 3:
+                    LinkedList list;
+                    int choice_menu;
+                    inputGoldenBallOwnersFromFileToList(head);
+                    do{
+                        menu.Show_Fourth_Menu();
+                        cin >> choice_menu;
+                        switch (choice_menu) {
+                        case 1:
+                            for (int i = 0; i < n; ++i) {
+                                GoldenBallOwners player;
+                                InputPlayers(&player, 1);
+                                list.Insert(player);
+                            }
+                                break;
+                        case 2:
+                            // Вывод записей из списка
+                            cout << "Записи из списка в порядке их ввода:" << endl;
+                            list.Print();
+
+                            // Вывод записей из списка в порядке возрастания ID
+                            cout << "Записи из списка в порядке возрастания ID:" << endl;
+                            list.PrintSortedById();
+                            break;
+                            }
+                        }while (choice_menu != 7);
                 }
             } while (choice != 4);
 
@@ -335,7 +362,6 @@ int main()
                     // Вывод записей из списка в порядке возрастания ID
                     cout << "Записи из списка в порядке возрастания ID:" << endl;
                     list.PrintSortedById();
-                    break;
                     break;
                 }
             } while (choice != 4);

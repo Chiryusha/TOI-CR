@@ -1,5 +1,7 @@
 #include "LinkedList.h"
+#include <fstream>
 #include <iostream>
+#include <string>
 
 LinkedList::LinkedList() : head(nullptr) {}
 
@@ -160,3 +162,47 @@ void LinkedList::SortByYear() {
         current = current->next;
     }
 }
+
+void inputGoldenBallOwnersFromFileToList(ListNode*& head) {
+    std::ifstream file("golden_ball_owners1.txt");
+    if (!file.is_open()) {
+        std::cerr << "Не удалось открыть файл." << std::endl;
+        return;
+    }
+
+    int n;
+    file >> n;
+    if (n <= 0) {
+        std::cout << "Ошибка: Некорректное количество записей." << std::endl;
+        file.close();
+        return;
+    }
+
+    for (int i = 0; i < n; ++i) {
+        GoldenBallOwners player;
+        file >> player.id;
+        file.ignore(); // Пропускаем символ новой строки
+        std::getline(file, player.firstname);
+        std::getline(file, player.lastname);
+        file >> player.date_of_birth;
+        file >> player.year_of_getting_prize;
+        file.ignore(); // Пропускаем символ новой строки
+        std::getline(file, player.country);
+        std::getline(file, player.club);
+
+        ListNode* newNode = new ListNode(player);
+        if (head == nullptr) {
+            head = newNode;
+        }
+        else {
+            ListNode* current = head;
+            while (current->next != nullptr) {
+                current = current->next;
+            }
+            current->next = newNode;
+        }
+    }
+
+    file.close();
+}
+

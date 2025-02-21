@@ -28,5 +28,6 @@ private:
     void SortById();
     void SortByYear();
 };
+void inputGoldenBallOwnersFromFileToList(ListNode*& head);
 
 
