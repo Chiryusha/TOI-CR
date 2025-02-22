@@ -33,14 +33,6 @@ void LinkedList::display() {
     ListNode* current = head;
     while (current) {
         current->data.Show();
-        /*cout << "Номер игрока: " << current->data.id << endl;
-        cout << "Имя: " << current->data.firstname <<endl;
-        cout << "Фамилия: " << current->data.lastname << endl;
-        cout << "Дата рождения: " << current->data.date_of_birth << endl;
-        cout << "Дата получения мяча: " << current->data.year_of_getting_prize << endl;
-        cout << "Страна: " << current->data.country << endl;
-        cout << "Клуб: " << current->data.club << endl;
-        cout << "------------------------" << endl;*/
         current = current->next;
     }
 }
@@ -157,6 +149,79 @@ void LinkedList::displaySortedByYear() {
 }
 
 
+ListNode* LinkedList::recursiveSearchById(ListNode*& current, unsigned int id) {
+    if (current == nullptr) {
+        return nullptr; // Элемент не найден
+    }
+    if (current->data.id == id) {
+        return current; // Элемент найден
+    }
+    return recursiveSearchById(current->next, id); // Рекурсивный вызов для следующего узла
+}
+
+
+    void LinkedList::searchByYear(unsigned int year) {
+        ListNode* current = head;
+        bool found = false;
+
+        while (current) {
+            if (current->data.year_of_getting_prize == year) {
+                if (!found) {
+                    cout << "Игроки, получившие награду в " << year << " году:" << endl;
+                    found = true;
+                }
+                cout << "ID: " << current->data.id << endl;
+                cout << "Имя: " << current->data.firstname << " " << current->data.lastname << endl;
+                cout << "Дата рождения: " << current->data.date_of_birth << endl;
+                cout << "Страна: " << current->data.country << endl;
+                cout << "Клуб: " << current->data.club << endl;
+                cout << "------------------------" << endl;
+            }
+            current = current->next;
+        }
+        if (!found) {
+            cout << "Игроки с годом получения награды " << year << " не найдены." << endl;
+        }
+    }
+
+    bool LinkedList::deleteById(unsigned int id) {
+        ListNode* current = head;
+        ListNode* prevNode = nullptr;
+
+        // Ищем узел с заданным ID
+        while (current != nullptr && current->data.id != id) {
+            prevNode = current;
+            current = current->next;
+        }
+
+        // Если узел не найден
+        if (current == nullptr) {
+            cout << "Игрок с ID " << id << " не найден." << endl;
+            return false;
+        }
+
+        // Если удаляем head
+        if (current == head) {
+            head = current->next;
+            if (head) {
+                head->prev = nullptr;
+            }
+        }
+        // Если удаляем не head
+        else {
+            prevNode->next = current->next;
+            if (current->next) {
+                current->next->prev = prevNode;
+            }
+        }
+
+        delete current; // Освобождаем память
+        cout << "Игрок с ID " << id << " успешно удалён." << endl;
+        return true;
+    }
+
+
+
 
 
 
@@ -176,17 +241,6 @@ void LinkedList::displaySortedByYear() {
     return false;
 }
 
-bool LinkedList::SearchByYear(int year, GoldenBallOwners& result) const {
-    ListNode* current = head;
-    while (current != nullptr) {
-        if (current->data.year_of_getting_prize == year) {
-            result = current->data;
-            return true;
-        }
-        current = current->next;
-    }
-    return false;
-}
 
 bool LinkedList::DeleteById(int id) {
     ListNode* current = head;

@@ -202,13 +202,37 @@ int main()
                             list.display();
                             break;
                         case 3:
-
+                            cout << "Список игроков, отсортированный по возрастанию ID:" << endl;
+                            list.displaySortedById();
+                            cout << " " << endl;
+                            cout << "Список игроков, отсортированный по убыванию года получения награды:" << endl;
+                            list.displaySortedByYear();
                             break;
                         case 4:
+                            int Searchid;
+                            ListNode* result1;
+                            cout << "Введите номер игрока для выполнения поиска:" << endl;
+                            cin >> Searchid;
+                            result1 = list.recursiveSearchById(list.head, Searchid);
+                            if (result1 != nullptr) {
+                                cout << "Найден игрок: " << endl;
+                                result1->data.Show();
+                            }
+                            else {
+                                cout << "Запись не найдена." << endl;
+                            }
                             break;
                         case 5:
+                            int SearchYear;
+                            cout << "Введите год получения награды для поиска: " << endl;
+                            cin >> SearchYear;
+                            list.searchByYear(SearchYear);
                                 break;
                         case 6:
+                            int Deleteid;
+                            cout << "Введите номер игрока, данные о котором хотите удалить: " << endl;
+                            cin >> Deleteid;
+                            list.deleteById(Deleteid);
                             break;
                             }
                         }while (choice_menu != 7);
@@ -335,7 +359,16 @@ int main()
                             }
                             break;
                         case 3:
-
+                            int SearchKey2;
+                            cout << "Введите год получения награды: ";
+                            cin >> SearchKey2;
+                            result = SearchNodeIterative(rootByYear, SearchKey2);
+                            if (result != nullptr) {
+                                array[result->index].Show();
+                            }
+                            else {
+                                cout << "Запись не найдена." << endl;
+                            }
                             break;
                         case 4:
                             // Удаление записи
@@ -356,9 +389,71 @@ int main()
                     break;
                 case 3:
                     LinkedList list;
+                    int choice_menu1;
+                    GoldenBallOwners player1;
+                    int count1;
                     int k;
                     cout << "Введите количество обладателей золотого мяча:" << endl;
                     cin >> k;
+                    for (int i = 0; i < k; i++) {
+                        Input(player1);
+                        list.Insert(player1);
+                    }
+                    do {
+                        menu.Show_Fourth_Menu();
+                        cin >> choice_menu1;
+                        switch (choice_menu1) {
+                        case 1:
+                            cout << "Введите количество игроков, которое вы хотите добавить:" << endl;
+                            cin >> count1;
+                            if (count1 <= 0) cout << "Вы ввели либо число меньше 0, либо не хотите добавлять игроков" << endl;
+                            else {
+                                for (int i = 0; i < count1; i++) {
+                                    cout << "Введите данные для игрока: " << i + 1 << endl;
+                                    Input(player1);
+                                    list.Insert(player1);
+                                }
+                            }
+                            break;
+                        case 2:
+                            // Вывод записей из списка
+                            list.display();
+                            break;
+                        case 3:
+                            cout << "Список игроков, отсортированный по возрастанию ID:" << endl;
+                            list.displaySortedById();
+                            cout << " " << endl;
+                            cout << "Список игроков, отсортированный по убыванию года получения награды:" << endl;
+                            list.displaySortedByYear();
+                            break;
+                        case 4:
+                            int Searchid;
+                            ListNode* result1;
+                            cout << "Введите номер игрока для выполнения поиска:" << endl;
+                            cin >> Searchid;
+                            result1 = list.recursiveSearchById(list.head, Searchid);
+                            if (result1 != nullptr) {
+                                cout << "Найден игрок: " << endl;
+                                result1->data.Show();
+                            }
+                            else {
+                                cout << "Запись не найдена." << endl;
+                            }
+                            break;
+                        case 5:
+                            int SearchYear;
+                            cout << "Введите год получения награды для поиска: " << endl;
+                            cin >> SearchYear;
+                            list.searchByYear(SearchYear);
+                            break;
+                        case 6:
+                            int Deleteid;
+                            cout << "Введите номер игрока, данные о котором хотите удалить: " << endl;
+                            cin >> Deleteid;
+                            list.deleteById(Deleteid);
+                            break;
+                        }
+                    } while (choice_menu1 != 7);
 
                     break;
                 }
