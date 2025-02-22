@@ -26,6 +26,7 @@ void GoldenBallOwners::Show() const
     cout << "Дата получения мяча: " << year_of_getting_prize << endl;
     cout << "Страна: " << country << endl;
     cout << "Клуб: " << club << endl;
+    cout << "-------------------" << endl;
 };
 
 void InputPlayers(GoldenBallOwners* ballers, int n) {

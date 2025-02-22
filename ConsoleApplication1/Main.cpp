@@ -177,27 +177,38 @@ int main()
                     break;
                 case 3:
                     LinkedList list;
+                    GoldenBallOwners player;
+                    int count;
                     int choice_menu;
-                    inputGoldenBallOwnersFromFileToList(head);
+                    list.readFromFile("golden_ball_owners1.txt");
                     do{
                         menu.Show_Fourth_Menu();
                         cin >> choice_menu;
                         switch (choice_menu) {
                         case 1:
-                            for (int i = 0; i < n; ++i) {
-                                GoldenBallOwners player;
-                                InputPlayers(&player, 1);
-                                list.Insert(player);
+                            cout << "Введите количество игроков, которое вы хотите добавить:" << endl;
+                            cin >> count;
+                            if (count <= 0) cout << "Вы ввели либо число меньше 0, либо не хотите добавлять игроков" << endl;
+                            else {
+                                for (int i = 0; i < count; i++) {
+                                    cout << "Введите данные для игрока: " << i + 1 << endl;
+                                    Input(player);
+                                    list.Insert(player);
+                                }
                             }
                                 break;
                         case 2:
                             // Вывод записей из списка
-                            cout << "Записи из списка в порядке их ввода:" << endl;
-                            list.Print();
+                            list.display();
+                            break;
+                        case 3:
 
-                            // Вывод записей из списка в порядке возрастания ID
-                            cout << "Записи из списка в порядке возрастания ID:" << endl;
-                            list.PrintSortedById();
+                            break;
+                        case 4:
+                            break;
+                        case 5:
+                                break;
+                        case 6:
                             break;
                             }
                         }while (choice_menu != 7);
@@ -349,19 +360,6 @@ int main()
                     cout << "Введите количество обладателей золотого мяча:" << endl;
                     cin >> k;
 
-                    for (int i = 0; i < k; ++i) {
-                        GoldenBallOwners player;
-                        InputPlayers(&player, 1);
-                        list.Insert(player);
-                    }
-
-                    // Вывод записей из списка
-                    cout << "Записи из списка в порядке их ввода:" << endl;
-                    list.Print();
-
-                    // Вывод записей из списка в порядке возрастания ID
-                    cout << "Записи из списка в порядке возрастания ID:" << endl;
-                    list.PrintSortedById();
                     break;
                 }
             } while (choice != 4);
