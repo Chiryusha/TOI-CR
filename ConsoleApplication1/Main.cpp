@@ -164,7 +164,7 @@ int main()
                             int deleteId1;
                             cout << "Введите ID для удаления: ";
                             cin >> deleteId1;
-                            DeleteRecordByIndexTree(array, rootById, n, deleteId1);
+                            DeleteRecordByIndexTree(array, rootById, n, deleteId1, rootByYear);
                             break;
                         case 5:
                             for (int i = 0; i < n; i++) {
@@ -375,8 +375,9 @@ int main()
                             int deleteId1;
                             cout << "Введите ID для удаления: ";
                             cin >> deleteId1;
-                            DeleteRecordByIndexTree(array, rootById, p, deleteId1);
+                            DeleteRecordByIndexTree(array, rootById, p, deleteId1, rootByYear);
                             break;
+        
                         case 5:
                             for (int i = 0; i < p; i++) {
                                 array[i].Show();

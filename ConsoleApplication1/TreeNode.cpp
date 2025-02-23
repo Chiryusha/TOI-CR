@@ -26,13 +26,13 @@ int getBalanceFactor(TreeNode* node) {
 
 TreeNode* rotateLeft(TreeNode* z) {
     TreeNode* y = z->right;
-    TreeNode* T2 = y->left;
+    TreeNode* o = y->left;
 
     y->left = z;
-    z->right = T2;
+    z->right = o;
 
-    z->height = 1 + std::max(getHeight(z->left), getHeight(z->right));
-    y->height = 1 + std::max(getHeight(y->left), getHeight(y->right));
+    z->height = 1 + max(getHeight(z->left), getHeight(z->right));
+    y->height = 1 + max(getHeight(y->left), getHeight(y->right));
 
     return y;
 }
@@ -40,13 +40,13 @@ TreeNode* rotateLeft(TreeNode* z) {
 
 TreeNode* rotateRight(TreeNode* z) {
     TreeNode* y = z->left;
-    TreeNode* T3 = y->right;
+    TreeNode* p = y->right;
 
     y->right = z;
-    z->left = T3;
+    z->left = p;
 
-    z->height = 1 + std::max(getHeight(z->left), getHeight(z->right));
-    y->height = 1 + std::max(getHeight(y->left), getHeight(y->right));
+    z->height = 1 + max(getHeight(z->left), getHeight(z->right));
+    y->height = 1 + max(getHeight(y->left), getHeight(y->right));
 
     return y;
 }
@@ -66,7 +66,7 @@ TreeNode* InsertNode(TreeNode* root, int key, int index) {
         return root; // Дубликат ключа не добавляется
     }
 
-    root->height = 1 + std::max(getHeight(root->left), getHeight(root->right));
+    root->height = 1 + max(getHeight(root->left), getHeight(root->right));
 
     int balance = getBalanceFactor(root);
 
@@ -273,7 +273,7 @@ void PrintTree(TreeNode* root, const GoldenBallOwners* array, int& n) {
     }
 }
 
-void DeleteRecordByIndexTree(GoldenBallOwners* array, TreeNode*& root, int& n, int id) {
+void DeleteRecordByIndexTree(GoldenBallOwners* array, TreeNode*& rootById, int& n, int id, TreeNode*& rootByYear) {
     int pos = -1;
     for (int i = 0; i < n; ++i) {
         if (array[i].id == id) {
@@ -288,10 +288,11 @@ void DeleteRecordByIndexTree(GoldenBallOwners* array, TreeNode*& root, int& n, i
         }
         --n;
 
-        root = DeleteNode(root, id);
+        rootById = DeleteNode(rootById, id);
 
         //Пересортировка индексов после удаления
-        //CreateIndex(array, n, IndexId, IndexYear);
+        rootById = CreateIndexTree(array, n, false);    // Дерево по id
+        rootByYear = CreateIndexTree(array, n, true);   // Дерево по году
     }
     else {
         cout << "Запись не найдена." << endl;
