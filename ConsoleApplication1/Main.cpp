@@ -51,18 +51,18 @@ int main()
                         case 1:
                             cout << "Сортировка по ID:" << endl;
                             cout << "------------------------" << endl;
-                            PrintByIndex(array, IndexId, size);
+                            PrintByIndex(array, IndexId, n);
 
                             cout << "Сортировка по году получения приза:" << endl;
                             cout << "------------------------" << endl;
-                            PrintByIndex(array, IndexYear, size);
+                            PrintByIndex(array, IndexYear, n);
                             break;
                         case 2:
                             int searchkey;
                             int result;
                             cout << "Введите год получения награды для поиска: ";
                             cin >> searchkey;
-                            result = BinarySearchRecursive(array, IndexYear, 0, size-1, searchkey);
+                            result = BinarySearchRecursive(array, IndexYear, 0, n-1, searchkey);
                             if (result != -1) {
                                 cout << "Найдено:" << endl;
                                 array[result].Show();
@@ -76,7 +76,7 @@ int main()
                             int result1;
                             cout << "Введите ID для поиска: ";
                             cin >> searchKey1;
-                            result1 = BinarySearchIterative(array, IndexId, size, searchKey1, false);//
+                            result1 = BinarySearchIterative(array, IndexId, n, searchKey1, false);//
                             if (result1 != -1) {
                                 cout << "Найдено:" << endl;
                                 array[result1].Show();
@@ -86,19 +86,31 @@ int main()
                             }
                             break;
                         case 4:
-                            // Редактирование записи
+                            // Редактирование записи по первому ключу
                             int updateId;
                             cout << "Введите ID для редактирования: ";
                             cin >> updateId;
-                            UpdateRecord(array, IndexId, IndexYear, size, updateId);
+                            UpdateRecord(array, IndexId, IndexYear, n, updateId);
                             break;
-                            case 5:
+                        case 5: // редактирование записи по второму ключу
+                            int updateYear;
+                            cout << "Введите год получения мяча для редактирования: ";
+                            cin >> updateYear;
+                            UpdateRecordYear(array, IndexId, IndexYear, n, updateYear);
+                            break;
+                            case 6: // Удаление записи по первому ключу
                                 int deleteId;
                                 cout << "Введите ID для удаления: ";
                                 cin >> deleteId;
                                 DeleteRecord(array, IndexId, IndexYear, n, deleteId);
                                 break;
-                        case 6:
+                            case 7: // Удаление записи по второму ключу
+                                int deleteYear;
+                                cout << "Введите год получения мяча для удаления: ";
+                                cin >> deleteYear;
+                                DeleteRecordYear(array, IndexId, IndexYear, n, deleteYear);
+                                break;
+                        case 8: // Вывод массива после изменений
                             for (int i = 0; i < n; i++) {
                                 array[i].Show();
                                 cout << "----------------------" << endl;
@@ -106,7 +118,7 @@ int main()
                             }
                             break;
                         }
-                    } while (ans != 7);
+                    } while (ans != 9);
 
                     break;
 
@@ -160,20 +172,26 @@ int main()
                             }
                             break;
                         case 4:
-                            // Удаление записи
+                            // Удаление записи по первому ключу
                             int deleteId1;
                             cout << "Введите ID для удаления: ";
                             cin >> deleteId1;
                             DeleteRecordByIndexTree(array, rootById, n, deleteId1, rootByYear);
                             break;
                         case 5:
+                            int deleteYear; // Удаление записи по второму ключу
+                            cout << "Введите год получения награды для удаления: ";
+                            cin >> deleteYear;
+                            DeleteRecordByIndexTree1(array, rootById, n, deleteYear, rootByYear);
+                            break;
+                        case 6: //Вывод массива после редактирования
                             for (int i = 0; i < n; i++) {
                                 array[i].Show();
                                 cout << "-----------------" << endl;;
                             }
                             break;
                         }
-                    } while (point != 6);
+                    } while (point != 7);
                     break;
                 case 3:
                     LinkedList list;
@@ -192,14 +210,14 @@ int main()
                             else {
                                 for (int i = 0; i < count; i++) {
                                     cout << "Введите данные для игрока: " << i + 1 << endl;
-                                    Input(player);
+                                    Input(player,count);
                                     list.Insert(player);
                                 }
                             }
-                                break;
+                            break;
                         case 2:
                             // Вывод записей из списка
-                            list.display();
+                            list.displayInInputOrder();
                             break;
                         case 3:
                             cout << "Список игроков, отсортированный по возрастанию ID:" << endl;
@@ -213,7 +231,7 @@ int main()
                             ListNode* result1;
                             cout << "Введите номер игрока для выполнения поиска:" << endl;
                             cin >> Searchid;
-                            result1 = list.recursiveSearchById(list.head, Searchid);
+                            result1 = list.recursiveSearchById(list.headById, Searchid);
                             if (result1 != nullptr) {
                                 cout << "Найден игрок: " << endl;
                                 result1->data.Show();
@@ -227,15 +245,21 @@ int main()
                             cout << "Введите год получения награды для поиска: " << endl;
                             cin >> SearchYear;
                             list.searchByYear(SearchYear);
-                                break;
+                            break;
                         case 6:
                             int Deleteid;
                             cout << "Введите номер игрока, данные о котором хотите удалить: " << endl;
                             cin >> Deleteid;
                             list.deleteById(Deleteid);
                             break;
-                            }
-                        }while (choice_menu != 7);
+                        case 7:
+                            int Deleteyear;
+                            cout << "Введите год получения мяча игроком, данные о котором хотите удалить: " << endl;
+                            cin >> Deleteyear;
+                            list.DeleteByYear(Deleteyear);
+                            break;
+                        }
+                        }while (choice_menu != 8);
                 }
             } while (choice != 4);
 
@@ -304,13 +328,26 @@ int main()
                             cin >> updateId;
                             UpdateRecord(array, IndexId, IndexYear, n, updateId);
                             break;
+
                         case 5:
+                            int updateYear;
+                            cout << "Введите год получения мяча для редактирования: ";
+                            cin >> updateYear;
+                            UpdateRecordYear(array, IndexId, IndexYear, n, updateYear);
+                            break;
+                        case 6:
                             int deleteId;
                             cout << "Введите ID для удаления: ";
                             cin >> deleteId;
                             DeleteRecord(array, IndexId, IndexYear, n, deleteId);
                             break;
-                        case 6:
+                        case 7:
+                            int deleteYear;
+                            cout << "Введите год получения мяча для удаления: ";
+                            cin >> deleteYear;
+                            DeleteRecordYear(array, IndexId, IndexYear, n, deleteYear);
+                            break;
+                        case 8:
                             for (int i = 0; i < n; i++) {
                                 array[i].Show();
                                 cout << "----------------------" << endl;
@@ -318,7 +355,8 @@ int main()
                             }
                             break;
                         }
-                    } while (ans != 7);
+                    } while (ans != 9);
+                    break;
 
                 case 2:
                     int point;
@@ -377,8 +415,14 @@ int main()
                             cin >> deleteId1;
                             DeleteRecordByIndexTree(array, rootById, p, deleteId1, rootByYear);
                             break;
-        
                         case 5:
+                            int deleteYear;
+                            cout << "Введите год получения награды для удаления: ";
+                            cin >> deleteYear;
+                            DeleteRecordByIndexTree1(array, rootById, p, deleteYear, rootByYear);
+                            break;
+        
+                        case 6:
                             for (int i = 0; i < p; i++) {
                                 array[i].Show();
                                 cout << "-----------------" << endl;;
@@ -386,7 +430,7 @@ int main()
                             break;
                         }
 
-                    } while (point != 6);
+                    } while (point != 7);
                     break;
                 case 3:
                     LinkedList list;
@@ -397,7 +441,7 @@ int main()
                     cout << "Введите количество обладателей золотого мяча:" << endl;
                     cin >> k;
                     for (int i = 0; i < k; i++) {
-                        Input(player1);
+                        Input(player1,k);
                         list.Insert(player1);
                     }
                     do {
@@ -411,14 +455,14 @@ int main()
                             else {
                                 for (int i = 0; i < count1; i++) {
                                     cout << "Введите данные для игрока: " << i + 1 << endl;
-                                    Input(player1);
+                                    Input(player1,count1);
                                     list.Insert(player1);
                                 }
                             }
                             break;
                         case 2:
                             // Вывод записей из списка
-                            list.display();
+                            list.displayInInputOrder();
                             break;
                         case 3:
                             cout << "Список игроков, отсортированный по возрастанию ID:" << endl;
@@ -432,7 +476,7 @@ int main()
                             ListNode* result1;
                             cout << "Введите номер игрока для выполнения поиска:" << endl;
                             cin >> Searchid;
-                            result1 = list.recursiveSearchById(list.head, Searchid);
+                            result1 = list.recursiveSearchById(list.headById, Searchid);
                             if (result1 != nullptr) {
                                 cout << "Найден игрок: " << endl;
                                 result1->data.Show();
@@ -453,8 +497,14 @@ int main()
                             cin >> Deleteid;
                             list.deleteById(Deleteid);
                             break;
+                        case 7:
+                            int Deleteyear;
+                            cout << "Введите год получения мяча игроком, данные о котором хотите удалить: " << endl;
+                            cin >> Deleteyear;
+                            list.DeleteByYear(Deleteyear);
+                            break;
                         }
-                    } while (choice_menu1 != 7);
+                    } while (choice_menu1 != 8);
 
                     break;
                 }

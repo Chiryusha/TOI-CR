@@ -298,25 +298,27 @@ void DeleteRecordByIndexTree(GoldenBallOwners* array, TreeNode*& rootById, int& 
         cout << "Запись не найдена." << endl;
     }
 }
-void UpdateIndexByTree(GoldenBallOwners* array, TreeNode*& rootById, TreeNode*& rootByYear, int& n, int id) {
-    // Поиск позиции записи по ID
-    TreeNode* node = SearchNodeRecursive(rootById, id);
-    if (node != nullptr) {
-        int pos = node->index;
-        cout << "Введите новые данные:" << endl;
-        cout << "Новое имя: ";
-        cin.ignore();
-        getline(cin, array[pos].firstname);
-        cout << "Новый год получения приза: ";
-        cin >> array[pos].year_of_getting_prize;
 
-        // Удаление старых узлов из деревьев
-        rootById = DeleteNode(rootById, id);
-        rootByYear = DeleteNode(rootByYear, array[pos].year_of_getting_prize);
+void DeleteRecordByIndexTree1(GoldenBallOwners* array, TreeNode*& rootById, int& n, int year, TreeNode*& rootByYear) {
+    int pos = -1;
+    for (int i = 0; i < n; ++i) {
+        if (array[i].year_of_getting_prize == year) {
+            pos = i;
+            break;
+        }
+    }
 
-        // Вставка новых узлов в деревья
-        rootById = InsertNode(rootById, array[pos].id, pos);
-        rootByYear = InsertNode(rootByYear, array[pos].year_of_getting_prize, pos);
+    if (pos != -1) {
+        for (int i = pos; i < n - 1; ++i) {
+            array[i] = array[i + 1];
+        }
+        --n;
+
+        rootByYear = DeleteNode(rootByYear, year);
+
+        //Пересортировка индексов после удаления
+        rootById = CreateIndexTree(array, n, false);    // Дерево по id
+        rootByYear = CreateIndexTree(array, n, true);   // Дерево по году
     }
     else {
         cout << "Запись не найдена." << endl;

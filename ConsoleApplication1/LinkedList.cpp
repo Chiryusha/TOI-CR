@@ -7,316 +7,328 @@
 LinkedList::LinkedList() : head(nullptr) {}
 
 LinkedList::~LinkedList() {
-    while (head != nullptr) {
-        ListNode* temp = head;
-        head = head->next;
-        delete temp;
+    // Очистка списка по id
+    ListNode* current = headById;
+    while (current) {
+        ListNode* next = current->next;
+        delete current;
+        current = next;
+    }
+    // Очистка списка по году
+    current = headByYear;
+    while (current) {
+        ListNode* next = current->next;
+        delete current;
+        current = next;
+    }
+    // Очистка списка порядка ввода
+    current = inputOrderHead;
+    while (current) {
+        ListNode* next = current->next;
+        delete current;
+        current = next;
     }
 }
 
 
 void LinkedList::Insert(GoldenBallOwners& data) {
+    // 1. Создание нового узла для всех трёх списков
     ListNode* newNode = new ListNode(data);
-    if (!head) {
-        head = newNode;
-        return;
+
+    // 2. Добавление в список порядка ввода (в конец)
+    if (!inputOrderHead) {
+        inputOrderHead = newNode;
     }
-    ListNode* current = head;
-    while (current->next) {
-        current = current->next;
-    }
-    current->next = newNode;
-}
-
-
-void LinkedList::display() {
-    ListNode* current = head;
-    while (current) {
-        current->data.Show();
-        current = current->next;
-    }
-}
-ListNode* LinkedList::partitionById(ListNode* low, ListNode* high) {
-    GoldenBallOwners pivot = high->data;
-    ListNode* i = low->prev; // Указатель на предыдущий элемент (нужно для списка)
-
-    for (ListNode* j = low; j != high; j = j->next) {
-        if (j->data.id <= pivot.id) {
-            i = (i == nullptr) ? low : i->next;
-            swap(i->data, j->data);
-        }
-    }
-    i = (i == nullptr) ? low : i->next;
-    swap(i->data, high->data);
-    return i;
-}
-
-void LinkedList::quickSortById(ListNode* low, ListNode* high) {
-    if (low != nullptr && high != nullptr && low != high && low != high->next) {
-        ListNode* pi = partitionById(low, high);
-        quickSortById(low, pi->prev);
-        quickSortById(pi->next, high);
-    }
-}
-
-void LinkedList::bubbleSortByYear() {
-    if (!head || !head->next) return;
-
-    bool swapped;
-    ListNode* last = nullptr;
-
-    do {
-        swapped = false;
-        ListNode* current = head;
-
-        while (current->next != last) {
-            if (current->data.year_of_getting_prize < current->next->data.year_of_getting_prize) {
-                swap(current->data, current->next->data);
-                swapped = true;
-            }
+    else {
+        ListNode* current = inputOrderHead;
+        while (current->next) {
             current = current->next;
         }
-        last = current;
-    } while (swapped);
-}
+        current->next = newNode;
+    }
 
-void LinkedList::setPrevPointers(ListNode* node, ListNode* prev) {
-    while (node) {
-        node->prev = prev;
-        prev = node;
-        node = node->next;
+    // 3. Вставка в список, упорядоченный по id (по возрастанию)
+    ListNode* currentId = headById;
+    ListNode* prevId = nullptr;
+    while (currentId != nullptr && currentId->data.id < data.id) {
+        prevId = currentId;
+        currentId = currentId->next;
+    }
+    if (prevId == nullptr) {
+        newNode = new ListNode(data); // Создаём новый узел для каждого списка
+        newNode->next = headById;
+        headById = newNode;
+    }
+    else {
+        newNode = new ListNode(data); // Создаём новый узел для каждого списка
+        newNode->next = currentId;
+        prevId->next = newNode;
+    }
+
+    // 4. Вставка в список, упорядоченный по году (по убыванию)
+    ListNode* currentYear = headByYear;
+    ListNode* prevYear = nullptr;
+    while (currentYear != nullptr && currentYear->data.year_of_getting_prize > data.year_of_getting_prize) {
+        prevYear = currentYear;
+        currentYear = currentYear->next;
+    }
+    if (prevYear == nullptr) {
+        newNode = new ListNode(data); // Создаём новый узел для каждого списка
+        newNode->next = headByYear;
+        headByYear = newNode;
+    }
+    else {
+        newNode = new ListNode(data); // Создаём новый узел для каждого списка
+        newNode->next = currentYear;
+        prevYear->next = newNode;
     }
 }
 
-void LinkedList:: sortByIdAscending() {
-    if (!head || !head->next) return;
 
-    // Устанавливаем prev указатели для работы с быстрой сортировкой
-    setPrevPointers(head);
-    GoldenBallOwners dummyData; // Пустой объект GoldenBallOwners
-    ListNode dummy(dummyData); // Временный узел для начала
-    dummy.next = head;
-    head->prev = &dummy;
-    quickSortById(head, getTail());
-    head = dummy.next;
-    head->prev = nullptr;
-}
 
-// Сортировка по убыванию года получения награды (сортировка пузырьком)
-void LinkedList:: sortByYearDescending() {
-    bubbleSortByYear();
-}
 
-// Вспомогательная функция для получения последнего узла
-ListNode* LinkedList::getTail() {
-    ListNode* current = head;
-    while (current && current->next) {
+void LinkedList::displayInInputOrder() {
+    ListNode* current = inputOrderHead;
+    while (current) {
+        current->data.Show();
+        cout << "-------------------" << endl;
         current = current->next;
     }
-    return current;
 }
 
-// Вывод отсортированного списка по ID (по возрастанию)
+
 void LinkedList::displaySortedById() {
-    sortByIdAscending();
-    ListNode* current = head;
+    ListNode* current = headById;
     while (current) {
-        cout << "ID: " << current->data.id << endl;
-        cout << "Имя: " << current->data.firstname << " " << current->data.lastname << endl;
-        cout << "Дата рождения: " << current->data.date_of_birth << endl;
-        cout << "Год награды: " << current->data.year_of_getting_prize << endl;
-        cout << "Страна: " << current->data.country << endl;
-        cout << "Клуб: " << current->data.club << endl;
-        cout << "------------------------" << endl;
+        current->data.Show();
+        cout << "-------------------" << endl;
         current = current->next;
     }
 }
 
-// Вывод отсортированного списка по году (по убыванию)
 void LinkedList::displaySortedByYear() {
-    sortByYearDescending();
-    ListNode* current = head;
+    ListNode* current = headByYear;
     while (current) {
-        cout << "Год награды: " << current->data.year_of_getting_prize << endl;
-        cout << "Имя: " << current->data.firstname << " " << current->data.lastname << endl;
-        cout << "ID: " << current->data.id << endl;
-        cout << "Дата рождения: " << current->data.date_of_birth << endl;
-        cout << "Страна: " << current->data.country << endl;
-        cout << "Клуб: " << current->data.club << endl;
-        cout << "------------------------" << endl;
+        current->data.Show();
+        cout << "-------------------" << endl;
         current = current->next;
     }
 }
 
 
-ListNode* LinkedList::recursiveSearchById(ListNode*& current, unsigned int id) {
+ListNode* LinkedList::recursiveSearchById(ListNode* current, unsigned int id) {
     if (current == nullptr) {
-        return nullptr; // Элемент не найден
+        return nullptr; // Список пуст, элемент не найден
     }
     if (current->data.id == id) {
-        return current; // Элемент найден
+        return current; // Элемент найден (первый по порядку в списке по id)
     }
     return recursiveSearchById(current->next, id); // Рекурсивный вызов для следующего узла
 }
 
 
-    void LinkedList::searchByYear(unsigned int year) {
-        ListNode* current = head;
-        bool found = false;
+void LinkedList::searchByYear(unsigned int year) {
+    ListNode* current = headByYear; // Начинаем поиск в списке, упорядоченном по году (убывание)
+    bool found = false;
 
-        while (current) {
-            if (current->data.year_of_getting_prize == year) {
-                if (!found) {
-                    cout << "Игроки, получившие награду в " << year << " году:" << endl;
-                    found = true;
-                }
-                cout << "ID: " << current->data.id << endl;
-                cout << "Имя: " << current->data.firstname << " " << current->data.lastname << endl;
-                cout << "Дата рождения: " << current->data.date_of_birth << endl;
-                cout << "Страна: " << current->data.country << endl;
-                cout << "Клуб: " << current->data.club << endl;
-                cout << "------------------------" << endl;
+    while (current) {
+        if (current->data.year_of_getting_prize == year) {
+            if (!found) {
+                cout << "Игроки, получившие награду в " << year << " году:" << endl;
+                found = true;
             }
-            current = current->next;
+            cout << "Номер: " << current->data.id << endl;
+            cout << "Имя: " << current->data.firstname << " " << current->data.lastname << endl;
+            cout << "Дата рождения: " << current->data.date_of_birth << endl;
+            cout << "Страна: " << current->data.country << endl;
+            cout << "Клуб: " << current->data.club << endl;
+            cout << "------------------------" << endl;
         }
-        if (!found) {
-            cout << "Игроки с годом получения награды " << year << " не найдены." << endl;
-        }
+        current = current->next;
     }
 
-    bool LinkedList::deleteById(unsigned int id) {
-        ListNode* current = head;
-        ListNode* prevNode = nullptr;
-
-        // Ищем узел с заданным ID
-        while (current != nullptr && current->data.id != id) {
-            prevNode = current;
-            current = current->next;
+    // Проверка в других списках на случай несогласованности (опционально, для отладки)
+    current = inputOrderHead;
+    while (current) {
+        if (current->data.year_of_getting_prize == year && !found) {
+            cout << "Игроки, получившие награду в " << year << " году (из порядка ввода):" << endl;
+            found = true;
+            cout << "ID: " << current->data.id << endl;
+            cout << "Имя: " << current->data.firstname << " " << current->data.lastname << endl;
+            cout << "Дата рождения: " << current->data.date_of_birth << endl;
+            cout << "Страна: " << current->data.country << endl;
+            cout << "Клуб: " << current->data.club << endl;
+            cout << "------------------------" << endl;
         }
+        current = current->next;
+    }
 
-        // Если узел не найден
-        if (current == nullptr) {
-            cout << "Игрок с ID " << id << " не найден." << endl;
-            return false;
+    current = headById;
+    while (current) {
+        if (current->data.year_of_getting_prize == year && !found) {
+            cout << "Игроки, получившие награду в " << year << " году (из порядка по id):" << endl;
+            found = true;
+            cout << "ID: " << current->data.id << endl;
+            cout << "Имя: " << current->data.firstname << " " << current->data.lastname << endl;
+            cout << "Дата рождения: " << current->data.date_of_birth << endl;
+            cout << "Страна: " << current->data.country << endl;
+            cout << "Клуб: " << current->data.club << endl;
+            cout << "------------------------" << endl;
         }
+        current = current->next;
+    }
 
-        // Если удаляем head
-        if (current == head) {
-            head = current->next;
-            if (head) {
-                head->prev = nullptr;
-            }
+    if (!found) {
+        cout << "Игроки с годом получения награды " << year << " не найдены." << endl;
+    }
+}
+
+bool LinkedList::deleteById(unsigned int id) {
+    bool deleted = false;
+
+    // Удаление из списка порядка ввода (inputOrderHead)
+    ListNode* currentInput = inputOrderHead;
+    ListNode* prevInput = nullptr;
+    while (currentInput != nullptr && currentInput->data.id != id) {
+        prevInput = currentInput;
+        currentInput = currentInput->next;
+    }
+    if (currentInput != nullptr) {
+        if (prevInput == nullptr) {
+            inputOrderHead = currentInput->next;
+            if (inputOrderHead) inputOrderHead->prev = nullptr;
         }
-        // Если удаляем не head
         else {
-            prevNode->next = current->next;
-            if (current->next) {
-                current->next->prev = prevNode;
-            }
+            prevInput->next = currentInput->next;
+            if (currentInput->next) currentInput->next->prev = prevInput;
         }
+        delete currentInput;
+        deleted = true;
+    }
 
-        delete current; // Освобождаем память
-        cout << "Игрок с ID " << id << " успешно удалён." << endl;
+    // Удаление из списка по id (headById)
+    ListNode* currentId = headById;
+    ListNode* prevId = nullptr;
+    while (currentId != nullptr && currentId->data.id != id) {
+        prevId = currentId;
+        currentId = currentId->next;
+    }
+    if (currentId != nullptr) {
+        if (prevId == nullptr) {
+            headById = currentId->next;
+            if (headById) headById->prev = nullptr;
+        }
+        else {
+            prevId->next = currentId->next;
+            if (currentId->next) currentId->next->prev = prevId;
+        }
+        delete currentId;
+        deleted = true;
+    }
+
+    // Удаление из списка по году (headByYear)
+    ListNode* currentYear = headByYear;
+    ListNode* prevYear = nullptr;
+    while (currentYear != nullptr && currentYear->data.id != id) {
+        prevYear = currentYear;
+        currentYear = currentYear->next;
+    }
+    if (currentYear != nullptr) {
+        if (prevYear == nullptr) {
+            headByYear = currentYear->next;
+            if (headByYear) headByYear->prev = nullptr;
+        }
+        else {
+            prevYear->next = currentYear->next;
+            if (currentYear->next) currentYear->next->prev = prevYear;
+        }
+        delete currentYear;
+        deleted = true;
+    }
+
+    if (deleted) {
+        cout << "Игрок с ID " << id << " успешно удалён из всех списков." << endl;
         return true;
     }
-
-
-
-
-
-
-
-
-
-
-/*bool LinkedList::SearchById(int id, GoldenBallOwners& result) const {
-    ListNode* current = head;
-    while (current != nullptr) {
-        if (current->data.id == id) {
-            result = current->data;
-            return true;
-        }
-        current = current->next;
+    else {
+        cout << "Игрок с ID " << id << " не найден." << endl;
+        return false;
     }
-    return false;
 }
 
 
-bool LinkedList::DeleteById(int id) {
-    ListNode* current = head;
-    ListNode* prev = nullptr;
-    while (current != nullptr && current->data.id != id) {
-        prev = current;
-        current = current->next;
+bool LinkedList::DeleteByYear(unsigned int year) {
+    bool deleted = false;
+
+    // Удаление из списка порядка ввода (inputOrderHead)
+    ListNode* currentInput = inputOrderHead;
+    ListNode* prevInput = nullptr;
+    while (currentInput != nullptr && currentInput->data.year_of_getting_prize != year) {
+        prevInput = currentInput;
+        currentInput = currentInput->next;
     }
-    if (current == nullptr) {
-        return false; ////
+    if (currentInput != nullptr) {
+        if (prevInput == nullptr) {
+            inputOrderHead = currentInput->next;
+            if (inputOrderHead) inputOrderHead->prev = nullptr;
+        }
+        else {
+            prevInput->next = currentInput->next;
+            if (currentInput->next) currentInput->next->prev = prevInput;
+        }
+        delete currentInput;
+        deleted = true;
     }
-    if (prev == nullptr) {
-        head = current->next;
+
+    // Удаление из списка по id (headById)
+    ListNode* currentId = headById;
+    ListNode* prevId = nullptr;
+    while (currentId != nullptr && currentId->data.year_of_getting_prize != year) {
+        prevId = currentId;
+        currentId = currentId->next;
+    }
+    if (currentId != nullptr) {
+        if (prevId == nullptr) {
+            headById = currentId->next;
+            if (headById) headById->prev = nullptr;
+        }
+        else {
+            prevId->next = currentId->next;
+            if (currentId->next) currentId->next->prev = prevId;
+        }
+        delete currentId;
+        deleted = true;
+    }
+
+    // Удаление из списка по году (headByYear)
+    ListNode* currentYear = headByYear;
+    ListNode* prevYear = nullptr;
+    while (currentYear != nullptr && currentYear->data.year_of_getting_prize != year) {
+        prevYear = currentYear;
+        currentYear = currentYear->next;
+    }
+    if (currentYear != nullptr) {
+        if (prevYear == nullptr) {
+            headByYear = currentYear->next;
+            if (headByYear) headByYear->prev = nullptr;
+        }
+        else {
+            prevYear->next = currentYear->next;
+            if (currentYear->next) currentYear->next->prev = prevYear;
+        }
+        delete currentYear;
+        deleted = true;
+    }
+
+    if (deleted) {
+        cout << "Игрок с годом получения награды " << year << " успешно удалён из всех списков." << endl;
+        return true;
     }
     else {
-        prev->next = current->next;
-    }
-    delete current;
-    return true;
-}
-
-bool LinkedList::DeleteByYear(int year) {
-    ListNode* current = head;
-    ListNode* prev = nullptr;
-    while (current != nullptr && current->data.year_of_getting_prize != year) {
-        prev = current;
-        current = current->next;
-    }
-    if (current == nullptr) {
-        return false; // Запись не найдена
-    }
-    if (prev == nullptr) {
-        head = current->next;
-    }
-    else {
-        prev->next = current->next;
-    }
-    delete current;
-    return true;
-}
-
-void LinkedList::SortById() {
-    if (head == nullptr || head->next == nullptr) {
-        return;
-    }
-
-    ListNode* current = head;
-    while (current != nullptr) {
-        ListNode* nextNode = current->next;
-        while (nextNode != nullptr) {
-            if (current->data.id > nextNode->data.id) {
-                std::swap(current->data, nextNode->data);
-            }
-            nextNode = nextNode->next;
-        }
-        current = current->next;
+        cout << "Игрок с годом получения награды " << year << " не найден." << endl;
+        return false;
     }
 }
-
-void LinkedList::SortByYear() {
-    if (head == nullptr || head->next == nullptr) {
-        return;
-    }
-
-    ListNode* current = head;
-    while (current != nullptr) {
-        ListNode* nextNode = current->next;
-        while (nextNode != nullptr) {
-            if (current->data.year_of_getting_prize > nextNode->data.year_of_getting_prize) {
-                std::swap(current->data, nextNode->data);
-            }
-            nextNode = nextNode->next;
-        }
-        current = current->next;
-    }
-}*/
 
 void LinkedList::readFromFile(const string& filename) {
     ifstream file(filename);
@@ -347,30 +359,33 @@ void LinkedList::readFromFile(const string& filename) {
 
     file.close();
 }
-void Input(GoldenBallOwners& player) {
+void Input(GoldenBallOwners& player,int n) {
     string day, month, year;
-    cout << "Номер игрока:" << endl;
-    cin >> player.id;
-    cin.ignore();
+    for (int i = 0; i < n; i++) {
+        cout << "Введите данные игрока " << i + 1 << ":\n";
+        cout << "Номер игрока: "<< endl;
+        cin >> player.id;
+        cin.ignore();
 
-    cout << "Введите имя игрока:" << endl;
-    getline(cin, player.firstname);
-    cout << "Введите фамилию игрока:" << endl;
-    getline(cin, player.lastname);
-    cout << "Введите дату рождения игрока в формате ДД.ММ.ГГГГ:" << endl;
-    cout << "День: ";
-    getline(cin, day);
-    cout << "Месяц в формате ММ: ";
-    getline(cin, month);
-    cout << "Год: ";
-    getline(cin, year);
-    player.date_of_birth = day + "." + month + "." + year; // Сохраняем корректную дату
-    cout << "Введите год получения золотого мяча:" << endl;
-    cin >> player.year_of_getting_prize;
-    cin.ignore();
-    cout << "Введите страну футболиста:" << endl;
-    getline(cin, player.country);
-    cout << "Введите клуб в котором футболист получил награду:" << endl;
-    getline(cin, player.club);
+        cout << "Введите имя игрока: "<< endl;
+        getline(cin, player.firstname);
+        cout << "Введите фамилию игрока: "<< endl;
+        getline(cin, player.lastname);
+        cout << "Введите дату рождения игрока в формате ДД.ММ.ГГГГ: "<< endl;
+        cout << "День: ";
+        getline(cin, day);
+        cout << "Месяц в формате ММ: ";
+        getline(cin, month);
+        cout << "Год: ";
+        getline(cin, year);
+        player.date_of_birth = day + "." + month + "." + year; // Сохраняем корректную дату
+        cout << "Введите год получения золотого мяча: " << endl;
+        cin >> player.year_of_getting_prize;
+        cin.ignore();
+        cout << "Введите страну футболиста: " << endl;
+        getline(cin, player.country);
+        cout << "Введите клуб в котором футболист получил награду: " << endl;
+        getline(cin, player.club);
+    }
 }
 

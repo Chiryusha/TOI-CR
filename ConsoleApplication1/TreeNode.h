@@ -30,6 +30,6 @@ TreeNode* rotateLeft(TreeNode* x);
 	void PrintByIdTree(TreeNode* root, const GoldenBallOwners* array);
 	void PrintByYearTree(TreeNode* root, const GoldenBallOwners* array);
 	void SearchByKey(const GoldenBallOwners* array, TreeNode* root, int key);
-	void UpdateIndexByTree(GoldenBallOwners* array, TreeNode*& rootById, TreeNode*& rootByYear, int& n, int year );
 	void DeleteRecordByIndexTree(GoldenBallOwners* array, TreeNode*& rootById, int& n, int id, TreeNode*& rootByYear);
+	void DeleteRecordByIndexTree1(GoldenBallOwners* array, TreeNode*& rootById, int& n, int year, TreeNode*& rootByYear);
 	TreeNode* SearchNodeIterative(TreeNode* root, int year);

@@ -226,3 +226,58 @@ void inputGoldenBallOwnersFromFile(GoldenBallOwners* array) {
     }
 
 
+void UpdateRecordYear(GoldenBallOwners* array, int* indexId, int* indexYear, int n, int year1) {
+    int pos = BinarySearchRecursive(array, indexYear, 0, n - 1, year1);
+    if (pos != -1) {
+        string day;
+        string month;
+        string year;
+        cout << "Введите новые данные для игрока, получившего мяч в  " << year1 << endl;
+        cout << "Номер игрока:" << endl;
+        cin >> array[pos].id;
+        cin.ignore();
+
+        cout << "Введите имя игрока:" << endl;
+        getline(cin, array[pos].firstname);
+        cout << "Введите фамилию игрока:" << endl;
+        getline(cin, array[pos].lastname);
+        cout << "Введите дату рождения игрока в формате ДД.ММ.ГГГГ:" << endl;
+        cout << "День: ";
+        getline(cin, day);
+        cout << "Месяц в формате ММ: ";
+        getline(cin, month);
+        cout << "Год: ";
+        getline(cin, year);
+        array[pos].date_of_birth = day + "." + month + "." + year; // Сохраняем корректную дату
+        cout << "Введите год получения золотого мяча:" << endl;
+        cin >> array[pos].year_of_getting_prize;
+        cin.ignore();
+        cout << "Введите страну футболиста:" << endl;
+        getline(cin, array[pos].country);
+        cout << "Введите клуб в котором футболист получил награду:" << endl;
+        getline(cin, array[pos].club);
+
+        // Пересортировка индексов после изменения
+        CreateIndex(array, n, indexId, indexYear);
+    }
+    else {
+        cout << "Запись не найдена." << endl;
+    }
+}
+
+void DeleteRecordYear(GoldenBallOwners* array, int* indexId, int* indexYear, int& n, int year) {
+    int pos = BinarySearchRecursive(array, indexYear, 0, n - 1, year);
+    if (pos != -1) {
+        for (int i = pos; i < n - 1; ++i) {
+            array[i] = array[i + 1];
+        }
+        --n;
+
+        // Пересортировка индексов после удаления
+        CreateIndex(array, n, indexId, indexYear);
+    }
+    else {
+        cout << "Запись не найдена." << endl;
+
+    }
+}

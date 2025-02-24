@@ -16,26 +16,21 @@ public:
     ~LinkedList();
 
     void Insert(GoldenBallOwners& data);
-    void display();
     void readFromFile(const string& filename);
-    void sortByIdAscending();
-    void sortByYearDescending();
-    ListNode* getTail();
-    void displaySortedById();
-    void displaySortedByYear();
     void searchByYear(unsigned int year);
-    ListNode* recursiveSearchById(ListNode*& current, unsigned int id);
+    ListNode* recursiveSearchById(ListNode* current,unsigned int id);
     ListNode* head;
     bool deleteById(unsigned int id);
-
-private:
-    void setPrevPointers(ListNode* node, ListNode* prev = nullptr);
-    ListNode* partitionById(ListNode* low, ListNode* high);
-    void quickSortById(ListNode* low, ListNode* high);
-    void bubbleSortByYear();
+    bool DeleteByYear(unsigned int year);
+    ListNode* headById;                 // Список, упорядоченный по id (возрастание)
+    ListNode* headByYear;               // Список, упорядоченный по году (убывание)
+    ListNode* inputOrderHead;
+    void displaySortedById();
+    void displaySortedByYear();
+    void displayInInputOrder();;
 };
 
-void Input(GoldenBallOwners& player);
+void Input(GoldenBallOwners& player,int n);
 
 
 
